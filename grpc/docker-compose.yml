@@ -1,0 +1,57 @@
+version: '2'
+
+services:
+  consul:
+    image: minhcuong/alpine-consul
+    networks:
+      - brige
+
+  consului:
+    image: minhcuong/alpine-consul-ui
+    ports:
+      - 8500:8500
+    networks:
+      - brige
+
+  tech_db:
+    image: postgres:alpine
+    container_name: "tech_db"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+    ports:
+      - "5432:5432"
+    volumes_from:
+      - /var/www/microservice/postgres-data-backup:/var/lib/postgresql/data
+    networks:
+      - brige
+
+  micro:
+    image: localhost:5500/micro-plugin
+    ports:
+      - "8080:8080"
+    networks:
+      - brige
+
+  auth:
+    image: localhost:5500/service-auth
+    depends_on:
+      - tech_db
+    networks:
+      - brige
+
+  media:
+  #    build: ../service-auth
+      image: localhost:5500/service-media
+      container_name: "service-media"
+      volumes_from:
+        - ~/data:/app/uploads
+      ports:
+        - "8888:8888"
+      depends_on:
+        - tech_db
+      networks:
+        - brige
+networks:
+  brige:

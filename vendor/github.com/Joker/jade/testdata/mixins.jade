@@ -1,0 +1,14 @@
+include testdata/mixins/dialog.jade
+include testdata/mixins/profile.jade
+
+.one
+  +dialog
+
+.two
+  +dialog-title('Whoop')
+
+.three
+  +dialog-title-desc('Whoop', 'Just a mixin')
+
+#profile
+  +profile(user)
