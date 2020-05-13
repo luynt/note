@@ -1,4 +1,0 @@
-package: github.com/luynt/note
-import:
-- package: github.com/kataras/iris
-- package: github.com/hashicorp/go-version
